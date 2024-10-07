@@ -18,6 +18,13 @@ public class Book {
         this.price = price;
     }
 
+    public Book(Book another) {
+        this.isbn = another.isbn;
+        this.title = another.title;
+        this.author = another.author;
+        this.price = another.price;
+    }
+
     // Getter and setter for ISBN
     public String getIsbn() {
         return isbn;

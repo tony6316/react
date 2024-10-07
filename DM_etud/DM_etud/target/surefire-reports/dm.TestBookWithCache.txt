@@ -1,0 +1,184 @@
+-------------------------------------------------------------------------------
+Test set: dm.TestBookWithCache
+-------------------------------------------------------------------------------
+Tests run: 14, Failures: 12, Errors: 0, Skipped: 0, Time elapsed: 0.001 s <<< FAILURE! -- in dm.TestBookWithCache
+dm.TestBookWithCache.dm.TestBookWithCache.testUpdateExistingBook() -- Time elapsed: 0 s <<< FAILURE!
+MapperException{message=Error deleting all books: La table/vue 'BOOK' n'existe pas., sqlState='42X05', errorCode=30000}
+	at dm.BookMapper.deleteAll(BookMapper.java:103)
+	at dm.TestBookWithCache.testUpdateExistingBook(TestBookWithCache.java:125)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.apache.maven.surefire.junit.PojoTestSetExecutor.executeTestMethod(PojoTestSetExecutor.java:104)
+	at org.apache.maven.surefire.junit.PojoTestSetExecutor.execute(PojoTestSetExecutor.java:63)
+	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:131)
+	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:93)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+dm.TestBookWithCache.dm.TestBookWithCache.testUpdateCacheManagement() -- Time elapsed: 0 s <<< FAILURE!
+MapperException{message=Error deleting all books: La table/vue 'BOOK' n'existe pas., sqlState='42X05', errorCode=30000}
+	at dm.BookMapper.deleteAll(BookMapper.java:103)
+	at dm.TestBookWithCache.testUpdateCacheManagement(TestBookWithCache.java:161)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.apache.maven.surefire.junit.PojoTestSetExecutor.executeTestMethod(PojoTestSetExecutor.java:104)
+	at org.apache.maven.surefire.junit.PojoTestSetExecutor.execute(PojoTestSetExecutor.java:63)
+	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:131)
+	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:93)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+dm.TestBookWithCache.dm.TestBookWithCache.testFindNotExistingBook() -- Time elapsed: 0 s <<< FAILURE!
+MapperException{message=Error finding book: La table/vue 'BOOK' n'existe pas., sqlState='42X05', errorCode=30000}
+	at dm.BookMapper.find(BookMapper.java:126)
+	at dm.TestBookWithCache.testFindNotExistingBook(TestBookWithCache.java:103)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.apache.maven.surefire.junit.PojoTestSetExecutor.executeTestMethod(PojoTestSetExecutor.java:104)
+	at org.apache.maven.surefire.junit.PojoTestSetExecutor.execute(PojoTestSetExecutor.java:63)
+	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:131)
+	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:93)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+dm.TestBookWithCache.dm.TestBookWithCache.testUpdateNotExistingBook() -- Time elapsed: 0 s <<< FAILURE!
+MapperException{message=Error deleting all books: La table/vue 'BOOK' n'existe pas., sqlState='42X05', errorCode=30000}
+	at dm.BookMapper.deleteAll(BookMapper.java:103)
+	at dm.TestBookWithCache.testUpdateNotExistingBook(TestBookWithCache.java:141)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.apache.maven.surefire.junit.PojoTestSetExecutor.executeTestMethod(PojoTestSetExecutor.java:104)
+	at org.apache.maven.surefire.junit.PojoTestSetExecutor.execute(PojoTestSetExecutor.java:63)
+	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:131)
+	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:93)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+dm.TestBookWithCache.dm.TestBookWithCache.testDeleteCacheManagement() -- Time elapsed: 0 s <<< FAILURE!
+MapperException{message=Error deleting all books: La table/vue 'BOOK' n'existe pas., sqlState='42X05', errorCode=30000}
+	at dm.BookMapper.deleteAll(BookMapper.java:103)
+	at dm.TestBookWithCache.testDeleteCacheManagement(TestBookWithCache.java:226)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.apache.maven.surefire.junit.PojoTestSetExecutor.executeTestMethod(PojoTestSetExecutor.java:104)
+	at org.apache.maven.surefire.junit.PojoTestSetExecutor.execute(PojoTestSetExecutor.java:63)
+	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:131)
+	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:93)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+dm.TestBookWithCache.dm.TestBookWithCache.testDeleteNotExistingBook() -- Time elapsed: 0 s <<< FAILURE!
+MapperException{message=Error deleting all books: La table/vue 'BOOK' n'existe pas., sqlState='42X05', errorCode=30000}
+	at dm.BookMapper.deleteAll(BookMapper.java:103)
+	at dm.TestBookWithCache.testDeleteNotExistingBook(TestBookWithCache.java:198)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.apache.maven.surefire.junit.PojoTestSetExecutor.executeTestMethod(PojoTestSetExecutor.java:104)
+	at org.apache.maven.surefire.junit.PojoTestSetExecutor.execute(PojoTestSetExecutor.java:63)
+	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:131)
+	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:93)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+dm.TestBookWithCache.dm.TestBookWithCache.testFindExistingBook() -- Time elapsed: 0 s <<< FAILURE!
+MapperException{message=Error deleting all books: La table/vue 'BOOK' n'existe pas., sqlState='42X05', errorCode=30000}
+	at dm.BookMapper.deleteAll(BookMapper.java:103)
+	at dm.TestBookWithCache.testFindExistingBook(TestBookWithCache.java:73)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.apache.maven.surefire.junit.PojoTestSetExecutor.executeTestMethod(PojoTestSetExecutor.java:104)
+	at org.apache.maven.surefire.junit.PojoTestSetExecutor.execute(PojoTestSetExecutor.java:63)
+	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:131)
+	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:93)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+dm.TestBookWithCache.dm.TestBookWithCache.testDeleteExistingBook() -- Time elapsed: 0 s <<< FAILURE!
+MapperException{message=Error deleting all books: La table/vue 'BOOK' n'existe pas., sqlState='42X05', errorCode=30000}
+	at dm.BookMapper.deleteAll(BookMapper.java:103)
+	at dm.TestBookWithCache.testDeleteExistingBook(TestBookWithCache.java:187)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.apache.maven.surefire.junit.PojoTestSetExecutor.executeTestMethod(PojoTestSetExecutor.java:104)
+	at org.apache.maven.surefire.junit.PojoTestSetExecutor.execute(PojoTestSetExecutor.java:63)
+	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:131)
+	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:93)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+dm.TestBookWithCache.dm.TestBookWithCache.testFindManyExistingBook() -- Time elapsed: 0 s <<< FAILURE!
+MapperException{message=Error deleting all books: La table/vue 'BOOK' n'existe pas., sqlState='42X05', errorCode=30000}
+	at dm.BookMapper.deleteAll(BookMapper.java:103)
+	at dm.TestBookWithCache.testFindManyExistingBook(TestBookWithCache.java:84)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.apache.maven.surefire.junit.PojoTestSetExecutor.executeTestMethod(PojoTestSetExecutor.java:104)
+	at org.apache.maven.surefire.junit.PojoTestSetExecutor.execute(PojoTestSetExecutor.java:63)
+	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:131)
+	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:93)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+dm.TestBookWithCache.dm.TestBookWithCache.testFindCacheManagement() -- Time elapsed: 0 s <<< FAILURE!
+MapperException{message=Error deleting all books: La table/vue 'BOOK' n'existe pas., sqlState='42X05', errorCode=30000}
+	at dm.BookMapper.deleteAll(BookMapper.java:103)
+	at dm.TestBookWithCache.testFindCacheManagement(TestBookWithCache.java:110)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.apache.maven.surefire.junit.PojoTestSetExecutor.executeTestMethod(PojoTestSetExecutor.java:104)
+	at org.apache.maven.surefire.junit.PojoTestSetExecutor.execute(PojoTestSetExecutor.java:63)
+	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:131)
+	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:93)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+dm.TestBookWithCache.dm.TestBookWithCache.testInsertNewBook() -- Time elapsed: 0 s <<< FAILURE!
+MapperException{message=Error deleting all books: La table/vue 'BOOK' n'existe pas., sqlState='42X05', errorCode=30000}
+	at dm.BookMapper.deleteAll(BookMapper.java:103)
+	at dm.TestBookWithCache.testInsertNewBook(TestBookWithCache.java:25)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.apache.maven.surefire.junit.PojoTestSetExecutor.executeTestMethod(PojoTestSetExecutor.java:104)
+	at org.apache.maven.surefire.junit.PojoTestSetExecutor.execute(PojoTestSetExecutor.java:63)
+	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:131)
+	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:93)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+dm.TestBookWithCache.dm.TestBookWithCache.testDeleteAll() -- Time elapsed: 0 s <<< FAILURE!
+MapperException{message=Error deleting all books: La table/vue 'BOOK' n'existe pas., sqlState='42X05', errorCode=30000}
+	at dm.BookMapper.deleteAll(BookMapper.java:103)
+	at dm.TestBookWithCache.testDeleteAll(TestBookWithCache.java:218)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.apache.maven.surefire.junit.PojoTestSetExecutor.executeTestMethod(PojoTestSetExecutor.java:104)
+	at org.apache.maven.surefire.junit.PojoTestSetExecutor.execute(PojoTestSetExecutor.java:63)
+	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:131)
+	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:93)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+

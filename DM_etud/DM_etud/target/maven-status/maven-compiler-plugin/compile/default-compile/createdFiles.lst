@@ -1,0 +1,11 @@
+dm\AbstractMapper.class
+dm\DomainObject.class
+dm\BookMapperException.class
+util\DB.class
+business\Book.class
+util\Registry.class
+dm\BookMapper.class
+dm\Mapper.class
+dm\Publisher.class
+dm\MapperException.class
+dm\PublisherMapper.class

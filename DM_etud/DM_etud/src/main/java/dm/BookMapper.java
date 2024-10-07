@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
+
 
 /**
  * Data Mapper class for managing persistence of Book objects.
@@ -72,7 +75,7 @@ public class BookMapper extends AbstractMapper {
         }
     }
 
-    // Delete a Book by ISBN
+    // Méthode delete dans BookMapper.java
     public void delete(String isbn) throws BookMapperException {
         try (Connection connection = DB.createDB("myDB").getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_SQL)) {
@@ -83,6 +86,12 @@ public class BookMapper extends AbstractMapper {
             throw new BookMapperException("Error deleting book: " + e.getMessage(), e.getSQLState(), e.getErrorCode());
         }
     }
+    // Surcharge de la méthode delete pour accepter un objet Book
+    public void delete(Book book) throws BookMapperException {
+        delete(book.getIsbn());
+    }
+
+
 
     // Delete all Books
     public void deleteAll() throws BookMapperException {
@@ -122,7 +131,7 @@ public class BookMapper extends AbstractMapper {
     // Find multiple Books by author
     @Override
     protected List<Book> abstractFindMany(String sql, Object[] params) throws BookMapperException {
-        List<Book> books = new ArrayList<>();
+        List<Book> books = new ArrayList<>();  // Utiliser une List
         try (Connection connection = DB.createDB("myDB").getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             for (int i = 0; i < params.length; i++) {
@@ -135,24 +144,27 @@ public class BookMapper extends AbstractMapper {
                     String author = resultSet.getString("author");
                     double price = resultSet.getDouble("price");
                     Book book = new Book(isbn, title, author, price);
-                    books.add(book);
+                    books.add(book);  // Ajouter à la liste
                     cache.put(isbn, book);
                 }
             }
         } catch (SQLException e) {
             throw new BookMapperException("Error finding books: " + e.getMessage(), e.getSQLState(), e.getErrorCode());
         }
-        return books;
+        return books;  // Retourner une List<Book>
     }
 
-    // Find Books by author
-    public List<Book> findByAuthor(String author) throws BookMapperException {
-        return abstractFindMany(FIND_MANY_SQL, new Object[]{author});
+    // Conversion dans findByAuthor
+    public Set<Book> findByAuthor(String author) throws BookMapperException {
+        List<Book> bookList = abstractFindMany(FIND_MANY_SQL, new Object[]{author});
+        return new HashSet<>(bookList);  // Convertir la List en Set
     }
 
-    // Nouvelle méthode findMany qui peut être utilisée avec différents critères de recherche
-    public List<Book> findMany(String criteria) throws BookMapperException {
-        String sql = "SELECT * FROM Book WHERE title LIKE ? OR author LIKE ?"; // Par exemple, recherche par titre ou auteur
-        return abstractFindMany(sql, new Object[]{"%" + criteria + "%", "%" + criteria + "%"});
+    // Conversion dans findMany
+    public Set<Book> findMany(String criteria) throws BookMapperException {
+        String sql = "SELECT * FROM Book WHERE title LIKE ? OR author LIKE ?";
+        List<Book> bookList = abstractFindMany(sql, new Object[]{"%" + criteria + "%", "%" + criteria + "%"});
+        return new HashSet<>(bookList);  // Convertir la List en Set
     }
+
 }

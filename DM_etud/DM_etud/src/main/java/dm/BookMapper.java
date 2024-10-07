@@ -149,4 +149,10 @@ public class BookMapper extends AbstractMapper {
     public List<Book> findByAuthor(String author) throws BookMapperException {
         return abstractFindMany(FIND_MANY_SQL, new Object[]{author});
     }
+
+    // Nouvelle méthode findMany qui peut être utilisée avec différents critères de recherche
+    public List<Book> findMany(String criteria) throws BookMapperException {
+        String sql = "SELECT * FROM Book WHERE title LIKE ? OR author LIKE ?"; // Par exemple, recherche par titre ou auteur
+        return abstractFindMany(sql, new Object[]{"%" + criteria + "%", "%" + criteria + "%"});
+    }
 }

@@ -32,12 +32,13 @@ public class PublisherMapper extends AbstractMapper<Publisher> {
             statement.executeUpdate();
             cache.put(publisher.getId(), publisher);
         } catch (SQLException e) {
+            // Logging or re-throwing the exception as a MapperException
             throw new MapperException("Error inserting publisher: " + e.getMessage(), e.getSQLState(), e.getErrorCode());
         }
     }
 
     @Override
-    protected List<Publisher> abstractFindMany(String sql, Object[] params) throws SQLException, MapperException {
+    protected List<Publisher> abstractFindMany(String sql, Object[] params) throws MapperException {
         List<Publisher> publishers = new ArrayList<>();
         try (Connection connection = DB.createDefaultDB().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -53,6 +54,9 @@ public class PublisherMapper extends AbstractMapper<Publisher> {
                     cache.put(id, publisher);
                 }
             }
+        } catch (SQLException e) {
+            // Handle the SQL Exception, rethrow as MapperException
+            throw new MapperException("Error finding publishers: " + e.getMessage(), e.getSQLState(), e.getErrorCode());
         }
         return publishers;
     }

@@ -8,18 +8,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.HashSet;
-
 
 /**
  * Data Mapper class for managing persistence of Book objects.
  */
-public class BookMapper extends AbstractMapper {
+public class BookMapper extends AbstractMapper<Book> {
+
+
     // Cache for storing Book objects
     private Map<String, Book> cache = new HashMap<>();
+
+    // Constructeur de BookMapper
+    public BookMapper() throws MapperException {
+        super(Book.class); // Passez la classe Book au constructeur de la classe parente
+    }
 
     // Static instance for Singleton pattern
     private static BookMapper instance;
@@ -32,17 +38,9 @@ public class BookMapper extends AbstractMapper {
     private static final String FIND_MANY_SQL = "SELECT * FROM Book WHERE author = ?";
     private static final String DELETE_ALL_SQL = "DELETE FROM Book";
 
-    // Private constructor for Singleton
-    private BookMapper() {
-    }
 
     // Public method to return the single instance of BookMapper
-    public static BookMapper getMapper() {
-        if (instance == null) {
-            instance = new BookMapper();
-        }
-        return instance;
-    }
+
 
     // Insert a new Book
     public String insert(Book book) throws BookMapperException {
@@ -53,10 +51,10 @@ public class BookMapper extends AbstractMapper {
             statement.setString(3, book.getAuthor());
             statement.setDouble(4, book.getPrice());
             statement.executeUpdate();
-            cache.put(book.getIsbn(), book);
-            return book.getIsbn();  // Retourner l'ISBN après insertion
+            cache.put(book.getIsbn(), book); // Add book to cache after insertion
+            return book.getIsbn();  // Return ISBN after insertion
         } catch (SQLException e) {
-            throw new BookMapperException("Error inserting book: " + e.getMessage(), e.getSQLState(), e.getErrorCode());
+            throw new BookMapperException("Error inserting book with ISBN: " + book.getIsbn() + ". " + e.getMessage(), e.getSQLState(), e.getErrorCode());
         }
     }
 
@@ -69,36 +67,35 @@ public class BookMapper extends AbstractMapper {
             statement.setDouble(3, book.getPrice());
             statement.setString(4, book.getIsbn());
             statement.executeUpdate();
-            cache.put(book.getIsbn(), book);
+            cache.put(book.getIsbn(), book);  // Update the cache with new book data
         } catch (SQLException e) {
-            throw new BookMapperException("Error updating book: " + e.getMessage(), e.getSQLState(), e.getErrorCode());
+            throw new BookMapperException("Error updating book with ISBN: " + book.getIsbn() + ". " + e.getMessage(), e.getSQLState(), e.getErrorCode());
         }
     }
 
-    // Méthode delete dans BookMapper.java
+    // Delete a Book by ISBN
     public void delete(String isbn) throws BookMapperException {
         try (Connection connection = DB.createDB("myDB").getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_SQL)) {
             statement.setString(1, isbn);
             statement.executeUpdate();
-            cache.remove(isbn);
+            cache.remove(isbn);  // Remove the book from the cache
         } catch (SQLException e) {
-            throw new BookMapperException("Error deleting book: " + e.getMessage(), e.getSQLState(), e.getErrorCode());
+            throw new BookMapperException("Error deleting book with ISBN: " + isbn + ". " + e.getMessage(), e.getSQLState(), e.getErrorCode());
         }
     }
-    // Surcharge de la méthode delete pour accepter un objet Book
+
+    // Overloaded delete method to accept a Book object
     public void delete(Book book) throws BookMapperException {
         delete(book.getIsbn());
     }
-
-
 
     // Delete all Books
     public void deleteAll() throws BookMapperException {
         try (Connection connection = DB.createDB("myDB").getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_ALL_SQL)) {
             statement.executeUpdate();
-            cache.clear();
+            cache.clear();  // Clear the cache after deleting all records
         } catch (SQLException e) {
             throw new BookMapperException("Error deleting all books: " + e.getMessage(), e.getSQLState(), e.getErrorCode());
         }
@@ -107,7 +104,7 @@ public class BookMapper extends AbstractMapper {
     // Find a Book by ISBN
     public Book find(String isbn) throws BookMapperException {
         if (cache.containsKey(isbn)) {
-            return cache.get(isbn);
+            return cache.get(isbn);  // Return book from cache if it exists
         }
         try (Connection connection = DB.createDB("myDB").getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_SQL)) {
@@ -118,12 +115,12 @@ public class BookMapper extends AbstractMapper {
                     String author = resultSet.getString("author");
                     double price = resultSet.getDouble("price");
                     Book book = new Book(isbn, title, author, price);
-                    cache.put(isbn, book);
+                    cache.put(isbn, book);  // Add the book to the cache
                     return book;
                 }
             }
         } catch (SQLException e) {
-            throw new BookMapperException("Error finding book: " + e.getMessage(), e.getSQLState(), e.getErrorCode());
+            throw new BookMapperException("Error finding book with ISBN: " + isbn + ". " + e.getMessage(), e.getSQLState(), e.getErrorCode());
         }
         return null;
     }
@@ -131,7 +128,7 @@ public class BookMapper extends AbstractMapper {
     // Find multiple Books by author
     @Override
     protected List<Book> abstractFindMany(String sql, Object[] params) throws BookMapperException {
-        List<Book> books = new ArrayList<>();  // Utiliser une List
+        List<Book> books = new ArrayList<>();
         try (Connection connection = DB.createDB("myDB").getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             for (int i = 0; i < params.length; i++) {
@@ -144,27 +141,53 @@ public class BookMapper extends AbstractMapper {
                     String author = resultSet.getString("author");
                     double price = resultSet.getDouble("price");
                     Book book = new Book(isbn, title, author, price);
-                    books.add(book);  // Ajouter à la liste
-                    cache.put(isbn, book);
+                    books.add(book);  // Add each found book to the list
+                    cache.put(isbn, book);  // Update cache with found book
                 }
             }
         } catch (SQLException e) {
             throw new BookMapperException("Error finding books: " + e.getMessage(), e.getSQLState(), e.getErrorCode());
         }
-        return books;  // Retourner une List<Book>
+        return books;
     }
 
-    // Conversion dans findByAuthor
+    // Public method to return the single instance of BookMapper (Singleton)
+    public static BookMapper getMapper() {
+        if (instance == null) {
+            try {
+                instance = new BookMapper();  // Crée l'instance de BookMapper si elle n'existe pas encore
+            } catch (MapperException e) {
+                // Gestion de l'exception sans la propager
+                System.err.println("Erreur lors de l'initialisation de BookMapper : " + e.getMessage());
+                e.printStackTrace();
+                // Vous pouvez gérer l'exception de manière appropriée ici, par exemple en renvoyant null ou en lançant une RuntimeException
+                throw new RuntimeException("Impossible d'initialiser BookMapper", e);
+            }
+        }
+        return instance;
+    }
+
+
+    // Find Books by author and return as Set<Book>
     public Set<Book> findByAuthor(String author) throws BookMapperException {
         List<Book> bookList = abstractFindMany(FIND_MANY_SQL, new Object[]{author});
-        return new HashSet<>(bookList);  // Convertir la List en Set
+        return new HashSet<>(bookList);  // Convert List to Set to ensure uniqueness
     }
 
-    // Conversion dans findMany
+    // Find Books based on criteria (title or author)
     public Set<Book> findMany(String criteria) throws BookMapperException {
         String sql = "SELECT * FROM Book WHERE title LIKE ? OR author LIKE ?";
         List<Book> bookList = abstractFindMany(sql, new Object[]{"%" + criteria + "%", "%" + criteria + "%"});
-        return new HashSet<>(bookList);  // Convertir la List en Set
+        return new HashSet<>(bookList);  // Convert List to Set to ensure uniqueness
     }
 
+    // Method to provide SQL statement for table creation
+    @Override
+    protected String getCreateTableStmt() {
+        return "CREATE TABLE IF NOT EXISTS Book ("
+                + "isbn VARCHAR(20) PRIMARY KEY, "
+                + "title VARCHAR(255), "
+                + "author VARCHAR(255), "
+                + "price DOUBLE)";
+    }
 }

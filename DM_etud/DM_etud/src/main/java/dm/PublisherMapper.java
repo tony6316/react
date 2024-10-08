@@ -16,6 +16,11 @@ import java.util.Map;
  * Data Mapper class for managing persistence of Publisher objects.
  */
 public class PublisherMapper extends AbstractMapper<Publisher> {
+    // Constructor
+    public PublisherMapper() throws MapperException {
+        super(Publisher.class);  // Appelle le constructeur de AbstractMapper
+    }
+
     // Cache for storing Publisher objects
     private Map<Integer, Publisher> cache = new HashMap<>();
 
@@ -35,6 +40,15 @@ public class PublisherMapper extends AbstractMapper<Publisher> {
             // Logging or re-throwing the exception as a MapperException
             throw new MapperException("Error inserting publisher: " + e.getMessage(), e.getSQLState(), e.getErrorCode());
         }
+    }
+
+    // Implémentation de la méthode getCreateTableStmt()
+    @Override
+    protected String getCreateTableStmt() {
+        return "CREATE TABLE IF NOT EXISTS Publisher ("
+                + "id INT PRIMARY KEY, "
+                + "name VARCHAR(100), "
+                + "address VARCHAR(255))";
     }
 
     @Override

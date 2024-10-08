@@ -43,12 +43,12 @@ public class BookMapper extends AbstractMapper<Book> {
     private static BookMapper instance;
 
     // SQL Statements
-    private static final String INSERT_SQL = "INSERT INTO Book (isbn, title, author, price) VALUES (?, ?, ?, ?);";
-    private static final String UPDATE_SQL = "UPDATE Book SET title = ?, author = ?, price = ? WHERE isbn = ?;";
-    private static final String DELETE_SQL = "DELETE FROM Book WHERE isbn = ?;";
-    private static final String FIND_SQL = "SELECT * FROM Book WHERE isbn = ?;";
-    private static final String FIND_MANY_SQL = "SELECT * FROM Book WHERE author = ?;";
-    private static final String DELETE_ALL_SQL = "DELETE FROM Book;";
+    private static final String INSERT_SQL = "INSERT INTO Book (isbn, title, author, price) VALUES (?, ?, ?, ?)";
+    private static final String UPDATE_SQL = "UPDATE Book SET title = ?, author = ?, price = ? WHERE isbn = ?";
+    private static final String DELETE_SQL = "DELETE FROM Book WHERE isbn = ?";
+    private static final String FIND_SQL = "SELECT * FROM Book WHERE isbn = ?";
+    private static final String FIND_MANY_SQL = "SELECT * FROM Book WHERE author = ?";
+    private static final String DELETE_ALL_SQL = "DELETE FROM Book";
 
 
     // Public method to return the single instance of BookMapper
@@ -203,14 +203,36 @@ public class BookMapper extends AbstractMapper<Book> {
         return new HashSet<>(bookList);  // Convert List to Set to ensure uniqueness
     }
 
+
+    public void dropAndCreateTable() throws SQLException {
+        try (Connection connection = DB.createDB("myDB").getConnection()) {
+            // Vérifiez si la table 'Book' existe
+            try (PreparedStatement checkStmt = connection.prepareStatement("SELECT 1 FROM SYS.SYSTABLES WHERE TABLENAME = 'BOOK'");
+                 ResultSet rs = checkStmt.executeQuery()) {
+
+                // Si la table existe, on la supprime
+                if (rs.next()) {
+                    try (PreparedStatement dropStmt = connection.prepareStatement("DROP TABLE Book")) {
+                        dropStmt.executeUpdate();
+                    }
+                }
+            }
+
+            // Créer ensuite la table
+            try (PreparedStatement createStmt = connection.prepareStatement(getCreateTableStmt())) {
+                createStmt.executeUpdate();
+            }
+        }
+    }
+
+
     // Méthode pour retourner l'instruction de création de table
     @Override
     protected String getCreateTableStmt() {
-        return "DROP TABLE IF EXISTS Book; "
-                + "CREATE TABLE Book ("
+        return "CREATE TABLE Book ("
                 + "isbn VARCHAR(20) PRIMARY KEY, "
                 + "title VARCHAR(100), "
                 + "author VARCHAR(100), "
-                + "price DOUBLE);";
+                + "price DOUBLE)";
     }
 }

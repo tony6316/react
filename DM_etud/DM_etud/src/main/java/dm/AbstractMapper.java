@@ -16,14 +16,19 @@ public abstract class AbstractMapper<T> {
     // Constructor to ensure table creation
     public AbstractMapper(Class<T> clazz) throws MapperException {
         try {
-            // Appeler getCreateTableStmt pour obtenir la requête SQL et créer la table
+            // Vérification si la table existe déjà avant de tenter de la créer
             String createTableStmt = getCreateTableStmt();
+            System.out.println("Requête SQL pour la création de la table : " + createTableStmt);
+
+            // Créer la table uniquement si elle n'existe pas
             createTableIfNotExists(createTableStmt);
+            System.out.println("Table '" + clazz.getSimpleName() + "' créée avec succès.");
         } catch (SQLException e) {
             System.err.println("Erreur SQL lors de la création de la table : " + e.getMessage());
             throw new MapperException("Erreur lors de la création de la table pour la classe : " + clazz.getSimpleName(), e.getSQLState(), e.getErrorCode());
         }
     }
+
 
 
     // Method to create the table if it doesn't already exist

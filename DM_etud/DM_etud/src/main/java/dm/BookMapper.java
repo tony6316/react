@@ -22,21 +22,33 @@ public class BookMapper extends AbstractMapper<Book> {
     // Cache for storing Book objects
     private Map<String, Book> cache = new HashMap<>();
 
+
     // Constructeur de BookMapper
     public BookMapper() throws MapperException {
         super(Book.class); // Passez la classe Book au constructeur de la classe parente
+        try (Connection connection = DB.createDB("myDB").getConnection()) {
+            // Supprimer la table si elle existe et la recréer
+            String dropAndCreateTableSQL = getCreateTableStmt();
+            try (PreparedStatement statement = connection.prepareStatement(dropAndCreateTableSQL)) {
+                statement.executeUpdate();
+                System.out.println("Table 'Book' recréée avec succès.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Erreur SQL lors de la création de la table : " + e.getMessage());
+            throw new MapperException("Erreur lors de la création de la table pour la classe Book", e.getSQLState(), e.getErrorCode());
+        }
     }
 
     // Static instance for Singleton pattern
     private static BookMapper instance;
 
     // SQL Statements
-    private static final String INSERT_SQL = "INSERT INTO Book (isbn, title, author, price) VALUES (?, ?, ?, ?)";
-    private static final String UPDATE_SQL = "UPDATE Book SET title = ?, author = ?, price = ? WHERE isbn = ?";
-    private static final String DELETE_SQL = "DELETE FROM Book WHERE isbn = ?";
-    private static final String FIND_SQL = "SELECT * FROM Book WHERE isbn = ?";
-    private static final String FIND_MANY_SQL = "SELECT * FROM Book WHERE author = ?";
-    private static final String DELETE_ALL_SQL = "DELETE FROM Book";
+    private static final String INSERT_SQL = "INSERT INTO Book (isbn, title, author, price) VALUES (?, ?, ?, ?);";
+    private static final String UPDATE_SQL = "UPDATE Book SET title = ?, author = ?, price = ? WHERE isbn = ?;";
+    private static final String DELETE_SQL = "DELETE FROM Book WHERE isbn = ?;";
+    private static final String FIND_SQL = "SELECT * FROM Book WHERE isbn = ?;";
+    private static final String FIND_MANY_SQL = "SELECT * FROM Book WHERE author = ?;";
+    private static final String DELETE_ALL_SQL = "DELETE FROM Book;";
 
 
     // Public method to return the single instance of BookMapper
@@ -92,14 +104,24 @@ public class BookMapper extends AbstractMapper<Book> {
 
     // Delete all Books
     public void deleteAll() throws BookMapperException {
-        try (Connection connection = DB.createDB("myDB").getConnection();
-             PreparedStatement statement = connection.prepareStatement(DELETE_ALL_SQL)) {
-            statement.executeUpdate();
-            cache.clear();  // Clear the cache after deleting all records
+        try (Connection connection = DB.createDB("myDB").getConnection()) {
+            // Tentative de suppression de toutes les lignes de la table 'Book'
+            try (PreparedStatement statement = connection.prepareStatement(DELETE_ALL_SQL)) {
+                int rowsAffected = statement.executeUpdate(); // Renvoie le nombre de lignes affectées
+                System.out.println(rowsAffected + " lignes supprimées.");
+                cache.clear();  // Vider le cache après suppression
+            }
         } catch (SQLException e) {
-            throw new BookMapperException("Error deleting all books: " + e.getMessage(), e.getSQLState(), e.getErrorCode());
+            // Vérifier si l'erreur provient du fait que la table n'existe pas
+            if (e.getSQLState().equals("42X05")) {  // Le code SQL pour "table does not exist" dans Derby
+                System.out.println("Table 'Book' n'existe pas. Aucune suppression effectuée.");
+            } else {
+                throw new BookMapperException("Erreur lors de la suppression de tous les livres : " + e.getMessage(), e.getSQLState(), e.getErrorCode());
+            }
         }
     }
+
+
 
     // Find a Book by ISBN
     public Book find(String isbn) throws BookMapperException {
@@ -181,13 +203,14 @@ public class BookMapper extends AbstractMapper<Book> {
         return new HashSet<>(bookList);  // Convert List to Set to ensure uniqueness
     }
 
-    // Method to provide SQL statement for table creation
+    // Méthode pour retourner l'instruction de création de table
     @Override
     protected String getCreateTableStmt() {
-        return "CREATE TABLE IF NOT EXISTS Book ("
+        return "DROP TABLE IF EXISTS Book; "
+                + "CREATE TABLE Book ("
                 + "isbn VARCHAR(20) PRIMARY KEY, "
-                + "title VARCHAR(255), "
-                + "author VARCHAR(255), "
-                + "price DOUBLE)";
+                + "title VARCHAR(100), "
+                + "author VARCHAR(100), "
+                + "price DOUBLE);";
     }
 }

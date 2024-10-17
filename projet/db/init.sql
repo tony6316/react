@@ -1,0 +1,5 @@
+CREATE TABLE fichiers (
+    id SERIAL PRIMARY KEY,
+    nom_fichier VARCHAR(255) NOT NULL,
+    horodatage TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
